@@ -15,8 +15,9 @@ import cors from "cors";
 // const dotenv = require('dotenv');
 import dotenv from "dotenv";
 
-// const errorHandler = require('./middleware/errorHandler.js')
-import errorHandler from "./middleware/errorHandler.js"
+import { errorListening } from "./middlewares/error.js"
+
+
 
 //routes import
 import pizzaRoutes from "./routes/pizzaRoutes.js"
@@ -57,6 +58,13 @@ app.use(cors());
 
  ConnectionDB();
 
+ //handle uncaughtexception
+process.on("uncaughtException",(err)=>{
+  console.log(`Error:${err.message}.cyan`)
+  console.log(`Shutting down the server to handle unCaughtException`)
+  process.exit(1)
+})
+
 
  //routes
 // app.use("/api/v1", require('./routes/pizzaRoutes.js'));
@@ -66,11 +74,12 @@ app.use("/api/v1",pizzaRoutes)
 app.use("/api/v1",userRoutes);
 
 
-
- //error handling middlewars call 
- app.use(errorHandler);
+app.use("/gallery",express.static("public/gallery"));
 
 
+
+//custom error handling
+app.use(errorListening);
 
 
 

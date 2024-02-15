@@ -1,14 +1,15 @@
-import Inventory from "../models/inventory.js";
-import Order from "../models/order.js"
-
-
+import PizzaOrder from "../models/pizzaOrder.js";
 
 //to create the inventory
 export const createInventory = async (req, res, next) => {
   try {
+    const pizzaOrder = new PizzaOrder(req.body);
+    await pizzaOrder.save();
+
     res.status(201).json({
       success: true,
       message: "product create successFully",
+      pizzaOrder,
     });
   } catch (error) {
     console.log(error);
@@ -37,7 +38,6 @@ export const getInventory = async (req, res, next) => {
 
 
 //to create  the custome pizza
-
 export const createCustomPizzaOrder = async (req, res, next) => {
     try {
       //extract user id from the aauthenticated user

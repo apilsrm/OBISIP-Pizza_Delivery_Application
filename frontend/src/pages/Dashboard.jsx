@@ -1,44 +1,51 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+
+// import {BsThreeDotsVertical} from "react-icons/bs"
+
+import BannerPage from "../components/home/banner/BannerPage";
+import TopPicks from "./topics/TopPicks";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getPizzas } from "../redux/features/pizzaSlice";
+import Spinner from "react-bootstrap/Spinner";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
-  const [showContainer, setShowContainer] = useState(false);
+  const { pizzas, loading, error } = useSelector((state) => state.pizza);
+  console.log(pizzas);
+  const dispatch = useDispatch();
 
-  const handleDoneButtonClick = () => {
-    setShowContainer(true);
-  };
+  useEffect(() => {
+    dispatch(getPizzas());
+  }, [dispatch]);
 
   return (
-    <div className="relative">
-      {/* Dashboard content */}
-      <div className={`absolute inset-0 bg-gray-200 bg-opacity-50 backdrop-filter backdrop-blur-md ${showContainer ? 'blur-lg' : ''}`}>
-        {/* Dashboard content */}
-        <h1>Dashboard Content</h1>
-        {/* "Done" button */}
-        <button onClick={handleDoneButtonClick}>Done</button>
+    <>
+      <div className="font-sans">
+        <BannerPage />
       </div>
-      
-      {/* Box or container */}
-      {showContainer && (
-        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white bg-opacity-80 rounded-md p-8">
-          <h2 className="text-lg font-semibold">Name</h2>
-          <p className="text-sm text-gray-700">Description</p>
-          <p className="text-sm text-gray-700">Price</p>
-          <ul className="list-disc list-inside">
-            <li>Item 1</li>
-            <li>Item 2</li>
-            <li>Item 3</li>
-          </ul>
-          <div className="flex justify-between mt-4">
-            {/* Link to Payment Page */}
-            <Link to="/payment" className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Payment</Link>
-            {/* Link back to Dashboard */}
-            <Link to="/dashboard" className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">Edit</Link>
+       <div className="mx-auto">
+        <Link to="/customPizza" className="no-underline bg-yellow-400 hover:bg-orange-500 px-6 py-3 rounded-md mt-2">
+        CustomPizzaPage
+        </Link>
+       </div>
+
+      <div className="container mx-auto py-8">
+        {loading ? (
+
+            <div className='d-flex justify-content-center align-items-center' style={{ height: "85vh" }}>
+              <Spinner animation="border" variant="danger" /> &nbsp;&nbsp; Loading .....
+            </div>
+          
+          
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {pizzas?.map((pizza) => (
+              <TopPicks key={pizza._id} pizza={pizza} />
+            ))}{" "}
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 };
-
 export default Dashboard;

@@ -1,11 +1,14 @@
 import {configureStore} from "@reduxjs/toolkit"
-
+import authSlice from "../features/authSlice";
+import adminSlice from "../features/adminSlice";
+import pizzaSlice from "../features/pizzaSlice"
 
 const store = configureStore({
   reducer: {
+    pizza: pizzaSlice,
+    auth:authSlice,
+    admin:adminSlice,
   },
 })
 
 export default store;
-
-// store.js:4  Store does not have a valid reducer. Make sure the argument passed to combineReducers is an object whose values are reducers

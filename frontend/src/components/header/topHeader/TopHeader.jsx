@@ -1,38 +1,44 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
-// import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 // import {FaSignOutAlt} from "react-icons/fa"
 import { toast } from "react-toastify";
-// import { setLogout } from "../../../redux/features/authSlice";
-// import decode from "jwt-decode"
+import { setLogout } from "../../../redux/features/authSlice";
+
+// import jwt_decode from '/node_modules/.vite/deps/jwt-decode.js?v=3977dbcb';
+// import { decode } from "jwt-decode"
+// import { decode } from '/node_modules/.vite/deps/jwt-decode.js?v=3977dbcb';
+import { jwtDecode } from 'jwt-decode';
 
 const TopHeader = ({isAuthenticated,user}) => {
   const [isDropDownShown, setIsDropDownShown] = useState(false);
 
  
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userToken  = localStorage?.getItem("token")
+  const userToken  = localStorage?.getItem("token") //jwt token 
+  //  console.log(userToken);
 
+  useEffect(()=> {
+    if(userToken){
+      const decodedToken = jwtDecode(userToken)
+      //  console.log(decodedToken);
 
-  // useEffect(()=> {
-  //   if(userToken){
-  //     const decodedToken = decode(userToken)
-  //     if(decodedToken.exp * 1000 < new Date().getTime()){
-  //       // dispatch(setLogout())
-  //       dispatch( toast.success("logoutsssssssslogout successfully"))
-  //       navigate('/login')
+      if(decodedToken.exp * 1000 < new Date().getTime()){
+        // dispatch( toast.success("logoutsssssssslogout successfully"))
+        dispatch(setLogout())
+        navigate('/login')
 
-  //       toast.warning("your session expired Login first !")
-  //     }
-  //   }
-  // },[dispatch , navigate , userToken])
+        toast.warning("your session expired Login first !")
+      }
+    }
+  },[dispatch , navigate , userToken])
 
   const handleLogOut =() => {   
-  // dispatch (setLogout())
-  // dispatch ( toast.success("logout sssssssssssuccessfully"))
+    // dispatch ( toast.success("logout sssssssssssuccessfully"))
+  dispatch(setLogout())
 
   navigate("/")
   toast.success("logout successfully")
@@ -69,7 +75,7 @@ const TopHeader = ({isAuthenticated,user}) => {
                   </li>
                   {user && user.role === 'admin' && (
                      <li className="px-4 py-2">
-                     <NavLink to="/admin/hamrodokan/panel">adminDashbord</NavLink>
+                     <NavLink to="/admin/dashboard">adminDashbord</NavLink>
                      </li>
                   )}
                   <li className="px-4 py-2">

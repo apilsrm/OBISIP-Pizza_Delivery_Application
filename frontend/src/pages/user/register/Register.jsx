@@ -174,7 +174,9 @@ const Register = () => {
               onChange={handleChange}
             />
             {registerErr && (
-              <span className="text-red-500">{registerErr.confirmPassword}</span>
+              <span className="text-red-500">
+                {registerErr.confirmPassword}
+              </span>
             )}
           </div>
 
@@ -187,7 +189,13 @@ const Register = () => {
               Register
             </button>
           </div>
-          <span>Already have an account <Link to="/login" className="no-underline"> Login here</Link></span>
+          <span>
+            Already have an account{" "}
+            <Link to="/login" className="text-blue-500 no-underline">
+              {" "}
+              Login here
+            </Link>
+          </span>
         </form>
       </div>
       ;

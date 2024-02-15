@@ -63,7 +63,7 @@ const Login = () => {
     <>
       {" "}
       <div className="max-w-md mx-auto mt-8 p-4 bg-white shadow-md rounded-md">
-        <h2 className="text-2xl font-semibold mb-4">Register</h2>
+        <h2 className="text-2xl font-semibold mb-4">Login</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label

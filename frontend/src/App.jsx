@@ -2,43 +2,121 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import './App.css'
-
 import { ToastContainer } from "react-toastify";
+ 
 import TopHeader from "./components/header/topHeader/TopHeader";
 import Header from "./components/header/Header";
-
-
 import Footer from "./components/footer/Footer";
 
-import Home from "./pages/Home";
-// import Register from "./pages/Register";
-// import Login from "./pages/Login";
 
-import PageNotFound from "./pages/pageNotFound/PageNotFound"
+//pages
+import Home from "./components/home/Home";
 import About from "./pages/aboutUs/About";
+import PageNotFound from "./pages/pageNotFound/PageNotFound"
+
+//user
+import Register from "./pages/user/register/Register";
+import Login from "./pages/user/login/Login";
+import Profile from "./pages/user/profile/Profile";
+import ChangePassword from "./pages/user/changePassword/ChangePassword";
+
 import CustomPizzaPage from "./components/customPizza/CustomPizzaPage";
 import Order from "./pages/Order";
+
+import { useDispatch, useSelector } from "react-redux";
+import { profile } from "./redux/features/authSlice"
+import { useEffect } from "react";
+import ProtectedRoutes from "./utils/protectedRoutes/ProtectedRoutes";
+import Dashboard from "./pages/Dashboard";
+
+//admin
+import AdminDashboard from "./components/admin/adminDashboard/AdminDashboard"
+import AddAdminProducts from "./components/admin/addAdminProduct/AddAdminProducts"
+import AllAdminProducts from "./components/admin/allAdminProducts/AllAdminProducts";
+
+
 
 const  App = () => {
   
 
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      dispatch(profile());
+    }
+  }, [dispatch, isAuthenticated]);
   return (
     <>
       <Router>
       <ToastContainer />
-      <TopHeader/>
+      <TopHeader isAuthenticated={isAuthenticated} user={user} />
       <Header />
 
+
       <Routes>
+
+      <Route
+            path="/admin/dashboard"
+            element={
+              <ProtectedRoutes
+                isAuthenticated={isAuthenticated}
+                adminRoute={true}
+                isAdmin={user && user.role === "admin"}
+              >
+                <AdminDashboard />
+              </ProtectedRoutes>
+            }
+          />
+       <Route
+            path="/add/admin/product"
+            element={
+              <ProtectedRoutes
+                isAuthenticated={isAuthenticated}
+                adminRoute={true}
+                isAdmin={user && user.role === "admin"}
+              >
+                <AddAdminProducts />
+              </ProtectedRoutes>
+            }
+          />
+       <Route
+            path="/admin/product"
+            element={
+              <ProtectedRoutes
+                isAuthenticated={isAuthenticated}
+                adminRoute={true}
+                isAdmin={user && user.role === "admin"}
+              >
+                <AllAdminProducts />
+              </ProtectedRoutes>
+            }
+          />
+
       <Route exact path="/" element={<Home />} />
-      <Route exact path="/about" element={<About />} />
-          {/* <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} /> */}
-          <Route path="/customPizza" element={<CustomPizzaPage/>} />
-          <Route path="/order" element={<Order/>} />
+      <Route exact path="/home" element={<Home />} />
+      <Route  path="/about/" element={<About />} />
 
-          <Route path="*" element={<PageNotFound />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/login" element={<Login />} />
+      <Route
+            path="/profile"
+            element={
+              <ProtectedRoutes isAuthenticated={isAuthenticated}>
+                <Profile />{" "}
+              </ProtectedRoutes>
+            }
+          />
+      <Route path="/change/password" element={<ChangePassword />} />
 
+      <Route path="/dashboard" element={<Dashboard />} />
+     <Route path="/customPizza" element={<CustomPizzaPage/>} />
+     
+     
+      <Route path="/order" element={<Order/>} />
+
+      <Route path="*" element={<PageNotFound />} />
       </Routes>
 
       <Footer />
