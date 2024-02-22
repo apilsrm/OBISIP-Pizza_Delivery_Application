@@ -303,6 +303,7 @@ import fs from "fs";
 import { unlink } from "fs/promises";
 import ErrorHandle from "../utils/errorHandler.js";
 import { tryCatchAsyncError } from "../middlewares/tryCatchAsyncError.js";
+import nodemailer from "nodemailer"
 
 //register
 export const register = tryCatchAsyncError(async (req, res, next) => {
@@ -487,19 +488,46 @@ export const forgetPassword = async(req, res, next) => {
           success: false,
           message: "User not found",
         });
-      }
 
+      }
+      // const generateOtp = () => {
+      //   // Generate a random 6-digit OTP
+      //   return Math.floor(100000 + Math.random() * 900000).toString();
+      // };
+
+      const token = user.getJwtToken();
+      console.log(token);
+
+      // User.updateOne({email: email},{$set:{token:token}})
+      
       // //generate a password reset token 
       // const token = jwt.sign({id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-      // //send password reset email
-      // const transporter = nodemailer.createTranport({
-      //          //baki xa? 
-      // });
+       //send password reset email
+       const transporter = nodemailer.createTransport({
+        host: 'smtp.ethereal.email',
+        port: 587,
+        auth: {
+            user: process.env.USER_EMAIL,
+            pass: process.env.EMAIL_PASSWORD
+        }
+    });
+    var mailOptions = {
+      from: process.env.USER_EMAIL,
+      to: email,
+      subject: 'Forget Password OTP',
+      html:`<p> Please copy or click the link <a href="http://localhost:${process.env.PORT}/api/v1/reset-password?token=${token}"> and reset the password or use otp <p>`,
+      text: ` aa http://localhost:${process.env.PORT}/api/v1/reset-password/${user._id}/${token}`
+    };
+    
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
      
-      // await transporter.sendMail({
-
-      // });
 
 
       res.status(200).json({
@@ -510,7 +538,6 @@ export const forgetPassword = async(req, res, next) => {
     
   } catch (error) {
     console.log(error);
-    next(error);
   }
 }
 

@@ -72,7 +72,7 @@ export const changePassword = createAsyncThunk(
   "/change/password",
   async ({ changeValue, toast, navigate }, { rejectWithValue, dispatch }) => {
     try {
-      const response = await api.passwordUpdate(changeValue);
+      const response = await api.passwordReset(changeValue);
       toast.success(response.data.message || "password channge sucessfully");
       dispatch(setLogout());
       dispatch(clearUser());
@@ -83,6 +83,36 @@ export const changePassword = createAsyncThunk(
     }
   }
 );
+
+export const sendPasswordResetRequest = createAsyncThunk(
+  "/forget-password",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await api.sendPasswordResetRequest(formData); // Assuming you have an API function for sending the password reset request
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+
+export const resetPassword = createAsyncThunk(
+  "/reset-password",
+  async ({ changeValue, toast, navigate }, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await api.passwordUpdate(changeValue);
+      toast.success(response.data.message || "password channge sucessfully");
+      dispatch(setLogout());
+      dispatch(clearUser());
+      navigate("/login");
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+)
+
 
 const authSlice = createSlice({
   name: "auth",
@@ -172,6 +202,35 @@ const authSlice = createSlice({
         state.user = action.payload.data;
       })
       .addCase(changePassword.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload.message;
+      })
+
+      .addCase(sendPasswordResetRequest.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(sendPasswordResetRequest.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.data;
+        toast.success("Password reset request sent successfully");
+        // Handle the success response, if needed
+        // For example, show a success message to the user
+      })
+      .addCase(sendPasswordResetRequest.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload.message; // Assuming the error message is in the payload
+      })
+
+
+
+      .addCase(resetPassword.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(resetPassword.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.data;
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload.message;
       });

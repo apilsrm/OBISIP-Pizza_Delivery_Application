@@ -19,6 +19,8 @@ import Register from "./pages/user/register/Register";
 import Login from "./pages/user/login/Login";
 import Profile from "./pages/user/profile/Profile";
 import ChangePassword from "./pages/user/changePassword/ChangePassword";
+import ResetPassword from "./pages/user/forgetpassword/ResetPassword";
+import ForgetPassword from "./pages/user/forgetpassword/ForgetPassword";
 
 import CustomPizzaPage from "./components/customPizza/CustomPizzaPage";
 import Order from "./pages/Order";
@@ -52,7 +54,7 @@ const  App = () => {
       <Router>
       <ToastContainer />
       <TopHeader isAuthenticated={isAuthenticated} user={user} />
-      <Header />
+      <Header isAuthenticated={isAuthenticated} user={user} />
 
 
       <Routes>
@@ -109,6 +111,8 @@ const  App = () => {
             }
           />
       <Route path="/change/password" element={<ChangePassword />} />
+      <Route path="/forget-password" element={<ForgetPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
 
       <Route path="/dashboard" element={<Dashboard />} />
      <Route path="/customPizza" element={<CustomPizzaPage/>} />

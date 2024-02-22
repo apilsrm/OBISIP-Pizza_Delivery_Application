@@ -40,6 +40,10 @@ const userSchema = new mongoose.Schema({
     verified:{
         type:String,
         default:false,
+    },
+    token:{
+        type:String,
+        default:'',
     }
 
 

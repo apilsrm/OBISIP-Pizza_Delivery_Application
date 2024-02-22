@@ -50,3 +50,7 @@ export const getAdminPizzas = () => API.get("/all/admin/pizzas")
  //update profile 
  export const updateProfile = (updateForm) => API.put("/update/user", updateForm);
 
+ export const sendPasswordResetRequest = (formData) => API.post("/forget-password", formData);
+ 
+ export const passwordReset = (changeValue) => API.post("/reset-password", changeValue);
+

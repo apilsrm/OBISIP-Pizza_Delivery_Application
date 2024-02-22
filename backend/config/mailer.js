@@ -1,5 +1,8 @@
-// import nodemailer  from "nodemailer";
+import React from 'react'
 
-// export const transporter = nodemailer.createTransport({
+const mailer = async () =>  {
 
-// });
+    
+}
+
+export default mailer;

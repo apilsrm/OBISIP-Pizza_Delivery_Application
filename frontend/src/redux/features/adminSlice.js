@@ -121,32 +121,7 @@ const adminSlice = createSlice({
         state.error = action.payload.message;
       })
 
-      //single product
-
-      // .addCase(productAdminSingle.pending, (state) => {
-      //   state.loading = true;
-      // })
-      // .addCase(productAdminSingle.fulfilled, (state, action) => {
-      //   state.loading = false;
-      //   state.adminProduct = action.payload.data;
-      // })
-      // .addCase(productAdminSingle.rejected, (state, action) => {
-      //   state.loading = false;
-      //   state.error = action.payload.message;
-      // })
-
-      // //update add post put no data
-      // .addCase(adminUpdateProduct.pending, (state) => {
-      //   state.loading = true;
-      // })
-      // .addCase(adminUpdateProduct.fulfilled, (state, action) => {
-      //   state.loading = false;
-      //   state.adminProduct = action.payload;
-      // })
-      // .addCase(adminUpdateProduct.rejected, (state, action) => {
-      //   state.loading = false;
-      //   state.error = action.payload.message;
-      // })
+      
 
       //delete
       .addCase(pizzaDelete.pending, (state) => {

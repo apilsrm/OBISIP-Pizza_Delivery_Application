@@ -18,7 +18,7 @@ export const getPizzas = createAsyncThunk(
 );
 
 const pizzaSlice = createSlice({
-    name: "productss",
+    name: "pizza",
     initialState: {
         loading: "",
         error: "",
@@ -41,7 +41,7 @@ const pizzaSlice = createSlice({
           })
           .addCase(getPizzas.fulfilled, (state, action) => {
             state.loading = false;
-            state.products = action.payload.pizzas;
+            state.pizzas = action.payload.pizzas;
           })
           .addCase(getPizzas.rejected, (state, action) => {
             state.loading = false;

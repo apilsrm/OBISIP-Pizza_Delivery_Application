@@ -1,7 +1,11 @@
 
 import BannerPage from "./banner/BannerPage";
 
+
+
+
 const Home = () => {
+
   
 
   return (
@@ -10,7 +14,8 @@ const Home = () => {
         <BannerPage />
       </div>
 
-    
+
+      
     </>
   );
 };

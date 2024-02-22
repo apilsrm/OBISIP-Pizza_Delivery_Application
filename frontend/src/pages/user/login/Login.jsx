@@ -103,13 +103,16 @@ const Login = () => {
             )}
           </div>
 
-          <div className="mt-4">
+          <div className="my-2 flex justify-between items-center">
             <button
               type="submit"
               className="py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               {loading && <Spinner animation="border" size="sm" />}Login
             </button>
+            <Link to="/forget-password" className="text-blue-500 text-md underline py-2 md:pl-7 ">Forget Password</Link>
+
+
           </div>
           <span>
             Dont have an account{" "}
