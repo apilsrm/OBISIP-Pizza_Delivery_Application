@@ -234,17 +234,30 @@
 
 // export default CustomPizzaPage;
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import BaseSelector from "./BaseSelector";
 import SauceSelector from "./SauceSelector";
 import CheeseSelector from "./CheeseSelector";
 import VeggiesSelector from "./VeggiesSelector";
 import MeatSelector from "./MeatSelector";
 import SizeSelector from "./SizeSelector";
-import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+
+import { useNavigate } from "react-router-dom";
 import prices from "./data"; // Import prices from data.js
+import { clearError, createCPizza } from "../../redux/features/pizzaSlice";
+import Spinner from "react-bootstrap/esm/Spinner";
+
 
 const CustomPizzaPage = () => {
+  const { loading, error } = useSelector((state) => state.pizza);
+
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [selectedOptions, setSelectedOptions] = useState({
     base: null,
     sauce: null,
@@ -342,16 +355,69 @@ const CustomPizzaPage = () => {
   //   }
   // };
 
-  const handleDoneButtonClick = () => {
+  const handleDoneButtonClick = (e) => {
     if (isFormIncomplete()) {
       alert("Please fill out all fields before proceeding.");
       return;
     }
-    // Redirect to order page if form is complete
-    // For now, let's assume it redirects to "/orders"
-    window.location.href = "/orders";
+    e.preventDefault();
+    
+
+    const cformData =  {
+    user: selectedOptions.pizzaName,
+      base: selectedOptions.base,
+      sauce: selectedOptions.sauce,
+      cheese: selectedOptions.cheese,
+      veggies: selectedOptions.veggies,
+      meat: selectedOptions.meat,
+      size: selectedOptions.size,
+      quantity: selectedOptions.quantity,
+      pizzaName: selectedOptions.pizzaName,
+      totalPrice: calculateTotalPrice(),
+      // Include any other necessary data
   };
+  dispatch(createCPizza({ cformData, toast, navigate }));
+
+  console.log(cformData);
   
+
+
+    // const cformData = new FormData();
+    // cformData.append("pizzaName", selectedOptions.pizzaName);
+    // cformData.append("base", selectedOptions.base);
+    // cformData.append("sauce", selectedOptions.sauce);
+    // cformData.append("cheese", selectedOptions.cheese);
+    // cformData.append("veggies", selectedOptions.veggies);
+    // cformData.append("meat", selectedOptions.meat);
+    // cformData.append("size", selectedOptions.size);
+    // cformData.append("totalPrice", calculateTotalPrice());
+    // cformData.append("quantity", selectedOptions.quantity);
+    // dispatch(createCPizza({ cformData, toast, navigate }));
+
+    // console.log(cformData)
+    // window.location.href = "/orders";
+  };
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(clearError());
+    }
+  }, [dispatch, error]);
+  
+
+
+  
+   
+
+
+
+
+
+
+
+
+
   const isPizzaNameFilled = () => {
     return selectedOptions.pizzaName.trim() !== "";
   };
@@ -480,6 +546,7 @@ const CustomPizzaPage = () => {
               (!isPizzaNameFilled() || isFormIncomplete()) ? "cursor-not-allowed" : "hover:bg-orange-600"
             } rounded-lg text-decoration-none`}
           >
+              {loading && <Spinner animation="border" size="sm" />}
             Place Order
           </button>
         </div>

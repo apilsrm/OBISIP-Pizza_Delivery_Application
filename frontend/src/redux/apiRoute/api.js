@@ -33,6 +33,14 @@ export const deletePizza = (id) => API.delete(`/delete/pizzas/${id}`)
 //admin 
 export const getAdminPizzas = () => API.get("/all/admin/pizzas")
 
+//custom pizza parts
+ export const createCP = (cformData) => API.post("/customPizza", cformData)
+ export const deleteCP = () => API.delete(`/delete/pizzas/${id}`)
+ export const getCP = () => API.get("/get/cpizzas")
+ export const updatestock = () => API.put("/update/stock")
+
+
+
 
 
 //user register

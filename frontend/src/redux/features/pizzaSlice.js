@@ -17,6 +17,38 @@ export const getPizzas = createAsyncThunk(
   }
 );
 
+ export const createCPizza = createAsyncThunk("/customPizza",
+ async({ cformData, toast, navigate }, { rejectWithValue }) => {
+  try {
+    const response = await api.createCP(cformData);
+      toast.success(response.data.message || "product create successfully");
+      navigate("/order");
+      return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response.data);
+  }
+ })
+
+//  export const createCPizza = createAsyncThunk("",
+//  async(__, { rejectWithValue }) => {
+//   try {
+    
+//   } catch (error) {
+    
+//   }
+//  })
+//  export const createCPizza = createAsyncThunk("",
+//  async(__, { rejectWithValue }) => {
+//   try {
+    
+//   } catch (error) {
+    
+//   }
+//  })
+
+
+
+
 const pizzaSlice = createSlice({
     name: "pizza",
     initialState: {
@@ -47,7 +79,17 @@ const pizzaSlice = createSlice({
             state.loading = false;
             state.error = action.payload.message;
           })
-    
+          .addCase(createCPizza.pending, (state) => {
+            state.loading = true;
+          })
+          .addCase(createCPizza.fulfilled, (state, action) => {
+            state.loading = false;
+            state.pizzas = action.payload.pizzas;
+          })
+          .addCase(createCPizza.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload.message;
+          })
           
       },
 });

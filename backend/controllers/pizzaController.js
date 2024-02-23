@@ -8,6 +8,9 @@ import { url } from "inspector";
 import ErrorHandle from "../utils/errorHandler.js";
 import { tryCatchAsyncError } from "../middlewares/tryCatchAsyncError.js";
 
+// import PizzaOrder from "../models/pizzaOrder.js";
+
+
 
 export const createPizza = tryCatchAsyncError(async (req, res, next) => {
   //extract pizza details form the request body
@@ -49,6 +52,38 @@ export const createPizza = tryCatchAsyncError(async (req, res, next) => {
     pizza,
   });
 });
+
+// export const createCustomPizza = tryCatchAsyncError(async (req, res, next) => {
+   
+//   //extract user id from the aauthenticated user
+//   const userId = req.user.id;
+
+//    // extract custmization details from request body
+//    const { base, sauce, cheese, veggies, meat ,size } = req.body;
+
+//     //create a new order
+//     const customPizza = new PizzaOrder.create({
+//       user: userId,
+//       base,
+//       sauce,
+//       cheese,
+//       veggies,
+//       meat,
+//       size,
+// });
+
+// res.status(201).json({
+//   success: true,
+//   message: "Custom pizza crete successfully",
+//   customPizza,
+
+// });
+// });
+
+
+
+
+
 
 
 

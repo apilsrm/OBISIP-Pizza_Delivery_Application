@@ -11,18 +11,18 @@ const userSchema = new mongoose.Schema({
     },
     email:{
         type:String,
-        requard:[true,"please enter valid email"],
+        required:[true,"please enter valid email"],
         unique:[true,"email already exits"],
     },
     mobileNo:{
         type:Number,
-        requard:[true,"please enter valid mobile number"],
+        required:[true,"please enter valid mobile number"],
         unique:[true,"Mobile Number already exits"],
 
     },
     password:{
         type:String,
-        requard:[true,"please enter valid mobile number"],
+        required:[true,"please enter valid mobile number"],
         select:false,
 
     },

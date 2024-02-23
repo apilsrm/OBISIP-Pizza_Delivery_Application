@@ -16,6 +16,8 @@
 import express  from "express";
 import upload from "../file/upload.js"
 import {allPizzas, allPizzasAdmin, createPizza, deletePizza, } from '../controllers/pizzaController.js'
+import { allCPizzas, createCustomPizza, delteCustomPizza, createStockByAdmin } from "../controllers/customPizzaController.js";
+// import { createCustomPizza ,createStockByAdmin} from "../controllers/customPizzaController.js";
 const router = express.Router();
 
 //create pizza
@@ -28,10 +30,18 @@ router.get('/get/pizzas',allPizzas);
 router.delete('delete/pizzas/:id',deletePizza);
 
 //admin get all products
-
 router.route("/all/admin/pizzas").get( allPizzasAdmin);
 
+//custom pizza routes
+router.post('/customPizza', createCustomPizza);
 
+router.delete('delete/pizzas/:id',delteCustomPizza);
+
+//by admins
+router.get('/get/cpizzas',allCPizzas);
+
+router.route("/create/stock").post(createStockByAdmin);
+// router.route("/update/stock").put( updateStockByAdmin);
 
 export default router;
 
